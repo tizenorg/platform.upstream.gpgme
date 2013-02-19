@@ -100,13 +100,13 @@ sh autogen.sh
 	--with-gpgsm=%{_bindir}/gpgsm	\
 	--with-gpgconf=%{_bindir}/gpgconf
 
-%install
-%make_install
-
 %check
 %if ! 0%{?qemu_user_space_build}
 make check
 %endif
+
+%install
+%make_install
 
 
 %post -n libgpgme -p /sbin/ldconfig
@@ -118,7 +118,6 @@ make check
 %defattr(-,root,root)
 %license COPYING
 %{_datadir}/common-lisp
-%{_datadir}/common-lisp/source
 %{_infodir}/gpgme*
 
 %files -n libgpgme
