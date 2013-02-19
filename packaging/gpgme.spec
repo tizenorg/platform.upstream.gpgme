@@ -21,7 +21,6 @@ License:        GPL-2.0+
 Group:          Productivity/Security
 Url:            http://www.gnupg.org/related_software/gpgme/
 Source:         ftp://ftp.gnupg.org/gcrypt/gpgme/%{name}-%{version}.tar.bz2
-Patch0:         gpgme-1.3.2-gpgme-config-remove-extraneous-libs.patch
 Source2:        baselibs.conf
 BuildRequires:  automake
 BuildRequires:  libassuan-devel >= 2.0.2
@@ -87,7 +86,6 @@ of standard widgets for common key selection tasks is even planned.
 
 %prep
 %setup -q
-%patch0
 
 %build
 sh autogen.sh
