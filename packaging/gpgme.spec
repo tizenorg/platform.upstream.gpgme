@@ -46,7 +46,7 @@ Summary:        A Library Designed to give Applications easy Access to GnuPG
 Group:          Development/Libraries
 Requires:       gpg2
 
-%description -n libgpgme11
+%description -n libgpgme
 GnuPG Made Easy (GPGME) is a library designed to make access to GnuPG
 easier for applications. It provides a high-level Crypto API for
 encryption, decryption, signing, signature verification, and key
