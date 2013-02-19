@@ -196,12 +196,13 @@ libgpgme_la_DEPENDENCIES = @LTLIBOBJS@ $(srcdir)/libgpgme.vers $(gpgme_deps)
 libgpgme_la_LIBADD = $(gpgme_res) @LIBASSUAN_LIBS@ @LTLIBOBJS@ \
 	             @GPG_ERROR_LIBS@
 
+libgpgme_pthread_la_CFLAGS = -pthread
 libgpgme_pthread_la_LDFLAGS = $(no_undefined) $(export_symbols) \
 	$(libgpgme_version_script_cmd) -version-info \
 	@LIBGPGME_LT_CURRENT@:@LIBGPGME_LT_REVISION@:@LIBGPGME_LT_AGE@
 libgpgme_pthread_la_DEPENDENCIES = @LTLIBOBJS@ $(srcdir)/libgpgme.vers
 libgpgme_pthread_la_LIBADD = $(gpgme_res) @LIBASSUAN_LIBS@ @LTLIBOBJS@ \
-	-lpthread @GPG_ERROR_LIBS@
+	@GPG_ERROR_LIBS@
 
 if BUILD_W32_GLIB
 libgpgme_glib_la_LDFLAGS = $(no_undefined) \

@@ -23,7 +23,7 @@ libs="-L@libdir@"
 
 # Network libraries.
 assuan_cflags="@LIBASSUAN_CFLAGS@"
-assuan_libs="@LIBASSUAN_LIBS@"
+#assuan_libs="@LIBASSUAN_LIBS@"
 
 # Configure libgpg-error.
 gpg_error_cflags="@GPG_ERROR_CFLAGS@"
