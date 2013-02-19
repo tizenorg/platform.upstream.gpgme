@@ -1,0 +1,164 @@
+2012-05-02  Werner Koch  <wk@gnupg.org>
+
+	Release 1.3.2.
+	* configure.ac: Bump LT version to C19/A8/R1.
+
+	* configure.ac (GITLOG_TO_CHANGELOG): Define.
+	* Makefile.am (gen-ChangeLog): Use it.
+
+	Remove unused pth stuff from gpgme-config.
+	* src/gpgme-config.in: Remove unused pth stuff.
+
+	Update signature summary for the case of missing X.509 keys.
+	* src/verify.c (gpgme_op_verify_result): Update summary field.
+
+2012-04-30  Werner Koch  <wk@gnupg.org>
+
+	Fix timestamp parsing for y2038 hack.
+	* src/conversion.c (_gpgme_parse_timestamp): Set ENDP before year 2038
+	check.
+
+2012-04-20  W. Trevor King  <wking@drexel.edu>
+
+	.gitignore: flesh out rules and add subdirectory-.gitignores.
+
+2012-04-13  W. Trevor King  <wking@drexel.edu>
+
+	status-table.c: include string.h for strcmp.
+	* status-table.c: include string.h to avoid `warning: implicit
+	declaration of function 'strcmp'`.
+
+2012-04-03  W. Trevor King  <wking@drexel.edu>
+
+	gpgme-tool: add help messages for a number of commands.
+	* src/gpgme-tool.c (hlp_engine, hlp_sub_protocol, hlp_armor, hlp_textmode,
+	hlp_include_certs, hlp_keylist_mode, hlp_input, hlp_output, hlp_message,
+	hlp_recipient, hlp_signer, hlp_signers_clear, hlp_decrypt, hlp_decrypt_verify,
+	hlp_encrypt, hlp_sign_encrypt, hlp_sign, hlp_verify, hlp_import): New strings.
+	(hlp_protocol): Fix typo.
+	(register_commands): Add documentation strings.
+	(doc): Mention Assuan.
+
+	uiserver.texi: fix decryption -> encryption typo in PREP_ENCRYPT discussion.
+	* doc/uiserver.texi (PREP_ENCRYPT): Fix documentation.
+
+	Update Werner Koch's distribution signing key in the README.
+	* README: Update signing key.
+
+2012-03-12  Marcus Brinkmann  <marcus.brinkmann@ruhr-uni-bochum.de>
+
+	Do not rely on glibc name of syscall.
+	* src/ath.c (ath_self): Use __NR_gettid, not SYS_gettid.
+
+	Update config.guess and config.sub to latest version.
+	* config.guess, config.sub: Update to latest version.
+
+2012-02-14  Marcus Brinkmann  <marcus.brinkmann@ruhr-uni-bochum.de>
+
+	Rework status table to be less dynamically generated.
+	* src/Makefile.am (EXTRA_DIST): Remove mkstatus.
+	(BUILT_SOURCE, MOSTLYCLEANFILES): Remove.
+	(main_sources): Remove status-table.h, extra-stati.h.
+	Add status-table.c.
+	(status-table.h): Remove rules for built source.
+	* src/decrypt.c: Don't include extra-stati.h.
+	* src/engine-gpg.c: Don't include status-table.h.
+	(status_cmp): Remove function.
+	(read_status): Use _gpgme_parse_status.
+	* src/engine-gpgsm.c: Don't include status-table.h.
+	(status_cmp, parse_status): Remove function.
+	(gpgsm_assuan_simple_command, status_handler): Use _gpgme_parse_status.
+	* src/engine-uiserver.c: Don't include status-table.h.
+	(status_cmp, parse_status): Remove function.
+	(uiserver_assuan_simple_command, status_handler): Use
+	_gpgme_parse_status.
+	* src/gpgme.h.in (gpgme_status_code_t): Add
+	GPGME_STATUS_DECRYPTION_INFO.
+	* src/util.h (_gpgme_status_init,_gpgme_parse_status): New declaration.
+	* src/status-table.c: New file.
+	* src/extra-stati.h, src/mkstatus: Files removed.
+	* version.c (do_subsystem_inits): Call _gpgme_status_init.
+
+2012-02-08  Marcus Brinkmann  <mb@g10code.com>
+
+	Use gpgme interface for error handling to avoid linking with gpg-error.
+	* tests/t-data.c, tests/run-export.c, tests/run-keylist.c,
+	tests/run-support.h, tests/run-verify.c, tests/gpg/t-decrypt-verify.c,
+	tests/gpg/t-edit.c, tests/gpg/t-eventloop.c, tests/gpg/t-keylist-sig.c,
+	tests/gpg/t-keylist.c, tests/gpg/t-support.h, tests/gpg/t-trustlist.c,
+	tests/gpg/t-verify.c, tests/gpg/t-wait.c, tests/gpgsm/cms-decrypt.c,
+	tests/gpgsm/cms-keylist.c, tests/gpgsm/t-keylist.c,
+	tests/gpgsm/t-support.h, tests/gpgsm/t-verify.c,
+	tests/opassuan/t-command.c: Use gpgme interface for gpg-error functions.
+
+	Link the thread test to pthread.
+	* tests/gpg/Makefile.am (t_thread1_LDADD): Add -lpthread.
+
+	Link gpgme-tool directly to libassuan, as it uses its interface.
+	* src/Makefile.am (gpgme_tool_LDADD): Add @LIBASSUAN_LIBS@.
+
+2012-01-19  Werner Koch  <wk@gnupg.org>
+
+	Support the mingw-w64 toolchain.
+	* autogen.sh (build-w32): Add i686-w64-mingw32 to the toolprefix.
+
+	Fix Solaris problems with ttyname_r.
+	* m4/gnupg-ttyname.m4: New.  Based on ttyname_r from gnulib.
+	* src/ttyname_r.c (_gpgme_ttyname_r): Rename from ttyname_r.
+	Implement hacks required for Solaris and possible other non-fully
+	Posix systems.
+	* src/util.h: Include unistd.h.  Redefine ttyname_r depending on
+	REPLACE_TTYNAME_R and put it into the gpgme name space.
+
+	Try to make configure.ac a bit smaller.
+	* configure.ac: Move header checks.
+
+	For W32 use a build number instead of abbreviated commit id.
+	We would need to use a shortened commit id so that it fits into an 16
+	bit Windows variable.  Further it is a random number and not something
+	increasing.  Thus a build number made up from the day of the year and
+	the hour is much more useful to describe a build number for a specific
+	revision.
+	* configure.ac [W32]: Replace BUILD_REVISION by BUILD_NUMBER.
+	* src/versioninfo.rc.in: Ditto.
+
+	Adjust configure.ac for modern autoconf.
+	* configure.ac: Minor cleanups.
+
+	Update to libtool 2.4.2.
+	* ltmain.sh, m4/libtool.m4, m4/ltoptions.m4, m4/ltversion.m4,
+	* m4/lt~obsolete.m4: Update.
+
+	Add ttyname_r check macro from gnulib.
+	* m4/gnupg-ttyname.m4: New. Taken from current gnulib.
+
+2011-12-02  Werner Koch  <wk@gnupg.org>
+
+	Generate the ChangeLog from commit logs.
+	* build-aux/gitlog-to-changelog: New script.  Taken from gnulib.
+	* build-aux/git-log-fix: New file.
+	* build-aux/git-log-footer: New file.
+	* build-aux/git-hook/commit-msg: New script.
+	* doc/HACKING: New file.
+	* ChangeLog: New file.
+	* Makefile.am (EXTRA_DIST): Add new files.
+	(gen-ChangeLog): New.
+	(dist-hook): Run gen-ChangeLog.
+	* autogen.sh: Install commit-msg hook for git.
+
+	Rename all ChangeLog files to ChangeLog-2011.
+
+2011-12-02  Werner Koch  <wk@gnupg.org>
+
+	NB: Changes done before December 1st, 2011 are described in
+	per directory files named ChangeLog-2011.  See doc/HACKING for
+	details.
+
+        -----
+        Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009,
+                      2010, 2011 g10 Code GmbH
+
+	Copying and distribution of this file and/or the original GIT
+	commit log messages, with or without modification, are
+	permitted provided the copyright notice and this notice are
+	preserved.
