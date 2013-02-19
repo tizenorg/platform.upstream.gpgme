@@ -78,7 +78,7 @@ AM_MAINTAINER_MODE
 AC_CANONICAL_HOST
 
 # Enable GNU extensions on systems that have them.
-AC_GNU_SOURCE
+AC_USE_SYSTEM_EXTENSIONS
 
 AH_VERBATIM([_REENTRANT],
 [/* To allow the use of GPGME in multithreaded programs we have to use
@@ -89,7 +89,7 @@ AH_VERBATIM([_REENTRANT],
 # define _REENTRANT 1
 #endif])
 
-AC_PROG_CC
+AC_PROG_CC_STDC
 AC_PROG_CXX
 AC_CHECK_PROGS(GITLOG_TO_CHANGELOG, gitlog-to-changelog,
                [build-aux/gitlog-to-changelog])
