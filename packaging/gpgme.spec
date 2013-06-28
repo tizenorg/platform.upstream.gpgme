@@ -22,6 +22,7 @@ Group:          Productivity/Security
 Url:            http://www.gnupg.org/related_software/gpgme/
 Source:         ftp://ftp.gnupg.org/gcrypt/gpgme/%{name}-%{version}.tar.bz2
 Source2:        baselibs.conf
+Source1001: 	gpgme.manifest
 BuildRequires:  automake
 BuildRequires:  libassuan-devel >= 2.0.2
 BuildRequires:  libgpg-error-devel >= 1.8
@@ -86,6 +87,7 @@ of standard widgets for common key selection tasks is even planned.
 
 %prep
 %setup -q
+cp %{SOURCE1001} .
 
 %build
 sh autogen.sh
@@ -115,17 +117,20 @@ make check
 
 
 %files
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %license COPYING
 %{_datadir}/common-lisp
 %{_infodir}/gpgme*
 
 %files -n libgpgme
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_libdir}/libgpgme.so.*
 %{_libdir}/libgpgme-pthread.so.*
 
 %files -n libgpgme-devel
+%manifest %{name}.manifest
 %defattr(-,root,root)
 %{_libdir}/libgpgme.so
 %{_libdir}/libgpgme-pthread.so
